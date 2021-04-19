@@ -1,0 +1,23 @@
+version: "1.0"
+project:
+  name: app_scoring_service-ml-pipeline-project
+  docker_image: bodyworkml/bodywork-core:latest
+  DAG: scoring_service
+stages:
+  scoring_service:
+    executable_module_path: stage_2_scoring_service/serve_model.py
+    requirements:
+      - Flask==1.1.2
+      - joblib==0.17.0
+      - numpy==1.19.4
+      - scikit-learn==0.23.2
+      - pickle
+    cpu_request: 0.25
+    memory_request_mb: 100
+    service:
+      max_startup_time_seconds: 30
+      replicas: 2
+      port: 5000
+      ingress: true
+logging:
+  log_level: INFO
